@@ -68,6 +68,7 @@ export default {
           } else {
             this.$message.success("登陆成功");
             window.sessionStorage.setItem('token',res.data.token);
+            console.log(11)
             this.$router.push('/home')
           }
         });
