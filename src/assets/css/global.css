@@ -1,15 +1,25 @@
-html,body,#app{
+html,
+body,
+#app {
     margin: 0;
     padding: 0;
     height: 100%;
+    min-width: 1266px;
 }
-.el-breadcrumb{
+
+.el-breadcrumb {
     margin-bottom: 15px;
     font-size: 12px;
 }
-.el-table{
+
+.el-table {
     margin-top: 15px;
 }
-.el-pagination{
+
+.el-pagination {
     margin-top: 15px;
+}
+.vcenter{
+    display: flex;
+    align-items: center;
 }

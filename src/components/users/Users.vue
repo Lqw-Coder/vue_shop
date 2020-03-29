@@ -52,7 +52,12 @@
               @click="deleteUserById(scope.row.id)"
             ></el-button>
             <el-tooltip effect="dark" content="分配角色" placement="top-start" :enterable="false">
-              <el-button type="warning" icon="el-icon-setting" size="mini"></el-button>
+              <el-button
+                type="warning"
+                icon="el-icon-setting"
+                size="mini"
+                @click="getRoleByUser(scope.row)"
+              ></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -84,9 +89,8 @@
           <el-input v-model="addForm.mobile"></el-input>
         </el-form-item>
       </el-form>
-      <!-- 用户添加框 -->
       <span slot="footer" class="dialog-footer">
-        <el-button @click="addaddDialogVisible = false">取 消</el-button>
+        <el-button @click="addDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="addUser">确 定</el-button>
       </span>
     </el-dialog>
@@ -111,6 +115,33 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="modifyDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="modifyUserInfo">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 用户分配角色对话框 -->
+    <el-dialog
+      @close="setRoleToUserClose"
+      title="分配角色"
+      :visible.sync="setRoleToUserVisible"
+      width="50%"
+    >
+      <div>
+        <p>{{userinfo.username}}</p>
+        <p>{{userinfo.role_name}}</p>
+        <p>
+          分配角色：
+          <el-select v-model="selectRoleId" placeholder="请选择">
+            <el-option
+              v-for="item in rolesList"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="setRoleToUserVisible = false">取 消</el-button>
+        <el-button type="primary" @click="saveRole">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -185,7 +216,15 @@ export default {
           { required: true, message: "请输入手机号码", trigger: "blur" },
           { validator: checkMobile, trigger: "blur" }
         ]
-      }
+      },
+      // 用户分配角色对话框
+      setRoleToUserVisible: false,
+      //需要被分配角色的用户信息
+      userinfo: {},
+      //获取所有的角色信息
+      rolesList: [],
+      // 选中的角色id
+      selectRoleId: ""
     };
   },
   created: function() {
@@ -285,15 +324,45 @@ export default {
           type: "warning"
         }
       ).catch(err => err);
-      if(confirmRes !== 'confirm'){
-        return this.$message.info('删除操作已取消')
+      if (confirmRes !== "confirm") {
+        return this.$message.info("删除操作已取消");
       }
-      const {data :res} = await this.$http.delete('users/'+id)
-      if(res.meta.status !== 200){
-        return this.$message.error('删除用户失败')
+      const { data: res } = await this.$http.delete("users/" + id);
+      if (res.meta.status !== 200) {
+        return this.$message.error("删除用户失败");
       }
-      this.$message.success('用户删除成功')
-      this.getUserList()
+      this.$message.success("用户删除成功");
+      this.getUserList();
+    },
+    async getRoleByUser(userinfo) {
+      this.userinfo = userinfo;
+      const { data: res } = await this.$http.get("roles");
+      if (res.meta.status !== 200) {
+        return this.$message.error("获取所有角色信息失败");
+      }
+      this.rolesList = res.data;
+      this.setRoleToUserVisible = true;
+    },
+    async saveRole() {
+      if (!this.selectRoleId) {
+        return this.$message.error("请选择你想分配的角色");
+      }
+      const { data: res } = await this.$http.put(
+        `users/${this.userinfo.id}/role`,
+        {
+          rid: this.selectRoleId
+        }
+      );
+      if (res.meta.status !== 200) {
+        return this.$message.error("修改用户角色失败");
+      }
+      this.$message.success("修改用户角色成功");
+      this.getUserList();
+      this.setRoleToUserVisible = false;
+    },
+    setRoleToUserClose() {
+      this.selectRoleId = "";
+      this.userinfo = {};
     }
   }
 };
