@@ -23,3 +23,7 @@ body,
     display: flex;
     align-items: center;
 }
+/* 设置级联窗口的高度 */
+.el-cascader-panel {
+  height: 200px;
+}

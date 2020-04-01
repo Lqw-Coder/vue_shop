@@ -85,8 +85,8 @@
             :props="cascaderProps"
             @change="handleCascaderChange"
             clearable
-            change-on-select
           ></el-cascader>
+          <!-- change-on-select -->
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -167,13 +167,14 @@ export default {
       selectedKeys: [],
       //级联选择器的属性配置
       cascaderProps: {
+        checkStrictly: true,
         expandTrigger: "hover",
         value: "cat_id",
         label: "cat_name",
         children: "children"
       },
       //编辑窗口显示
-      modifyCateDialogVisible: true,
+      modifyCateDialogVisible: false,
       modifyForm: {},
       modifyCateRules: {
         cat_name: [
@@ -321,15 +322,11 @@ export default {
   }
 };
 </script>
-<style lang="less" scope>
+<style lang="less" scoped>
 .treeTable {
   margin-top: 15px;
 }
 .el-cascader {
   width: 100%;
-}
-// 设置级联窗口的高度
-.el-cascader-panel {
-  height: 200px;
 }
 </style>
