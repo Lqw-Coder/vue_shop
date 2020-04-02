@@ -19,11 +19,25 @@ body,
 .el-pagination {
     margin-top: 15px;
 }
-.vcenter{
+
+.vcenter {
     display: flex;
     align-items: center;
 }
+
 /* 设置级联窗口的高度 */
 .el-cascader-panel {
-  height: 200px;
+    height: 200px;
+}
+
+.el-steps {
+    margin: 15px 0;
+}
+
+.el-step_title {
+    font-size: 13px;
+}
+/* 设置富文本编辑器的高度 */
+.ql-editor{
+    min-height: 300px;
 }
