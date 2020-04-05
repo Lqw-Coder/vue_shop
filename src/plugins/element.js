@@ -41,6 +41,7 @@ import {
   TimelineItem
 } from 'element-ui'
 
+//全局挂载
 Vue.use(Timeline)
 Vue.use(TimelineItem)
 Vue.use(Button)
@@ -79,5 +80,6 @@ Vue.use(CheckboxGroup)
 Vue.use(Checkbox)
 Vue.use(Upload)
 
+//将该组件挂载到vue原型对象中
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm

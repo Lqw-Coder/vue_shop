@@ -72,6 +72,7 @@ export default {
       if (res.meta.status != 200) return this.$message.error(res.meta.msg);
       this.menuList = res.data;
     },
+        // 点击按钮，切换菜单的折叠与展开
     toggleCollapse(){
       this.isCollapse = !this.isCollapse;
     }

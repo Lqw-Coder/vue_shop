@@ -55,6 +55,7 @@ export default {
     };
   },
   methods: {
+    //点击重置按钮，重置登陆表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
@@ -67,9 +68,9 @@ export default {
             this.$message.error("用户名或密码错误");
           } else {
             this.$message.success("登陆成功");
-            window.sessionStorage.setItem('token',res.data.token);
-            console.log(11)
-            this.$router.push('/home')
+            window.sessionStorage.setItem("token", res.data.token);
+            console.log("登陆成功，实现跳转");
+            this.$router.push("/home");
           }
         });
       });
